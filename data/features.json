@@ -1,0 +1,876 @@
+[
+  {
+    "id": "navaid",
+    "code": "NAV",
+    "iconClass": "nav",
+    "name": "Navaid",
+    "description": "Een radionavigatiehulpmiddel op de grond of in de lucht, gebruikt voor luchtvaartnavigatie. Omvat VOR, NDB, DME, ILS en TACAN installaties.",
+    "badges": [
+      "AIXM 5.1",
+      "ADIS",
+      "EASA"
+    ],
+    "aixmMapped": true,
+    "group": "Navigatie",
+    "attrs": [
+      {
+        "name": "designator",
+        "type": "CHAR(5)",
+        "status": "req",
+        "desc": "Uniek identificatiekenmerk van de navaid",
+        "uom": null,
+        "aixm": "designator"
+      },
+      {
+        "name": "type",
+        "type": "ENUM",
+        "status": "req",
+        "desc": "Type navaid (VOR, NDB, DME, ILS, TACAN)",
+        "uom": null,
+        "aixm": "type"
+      },
+      {
+        "name": "latitude",
+        "type": "DECIMAL(10,7)",
+        "status": "req",
+        "desc": "Geografische breedtegraad WGS-84",
+        "uom": "DEG",
+        "aixm": "pos.lat"
+      },
+      {
+        "name": "longitude",
+        "type": "DECIMAL(10,7)",
+        "status": "req",
+        "desc": "Geografische lengtegraad WGS-84",
+        "uom": "DEG",
+        "aixm": "pos.lon"
+      },
+      {
+        "name": "elevation",
+        "type": "DECIMAL(7,2)",
+        "status": "opt",
+        "desc": "Hoogte boven gemiddeld zeeniveau (MSL)",
+        "uom": "M / FT",
+        "aixm": "elevation"
+      },
+      {
+        "name": "frequency",
+        "type": "DECIMAL(7,3)",
+        "status": "cond",
+        "desc": "Operationele frequentie. Verplicht voor VOR/NDB/ILS.",
+        "uom": "MHZ / KHZ",
+        "aixm": "frequency"
+      },
+      {
+        "name": "channel",
+        "type": "VARCHAR(4)",
+        "status": "cond",
+        "desc": "DME/TACAN kanaal. Verplicht voor DME/TACAN.",
+        "uom": null,
+        "aixm": "channel"
+      },
+      {
+        "name": "declination",
+        "type": "DECIMAL(5,2)",
+        "status": "opt",
+        "desc": "Magnetische declinatie op locatie",
+        "uom": "DEG",
+        "aixm": "magneticVariation"
+      },
+      {
+        "name": "operationalStatus",
+        "type": "ENUM",
+        "status": "req",
+        "desc": "Operationele status (OPERATIONAL, UNSERVICEABLE, UNDER_MAINTENANCE)",
+        "uom": null,
+        "aixm": "availability.operationalStatus"
+      },
+      {
+        "name": "idsNonStandard",
+        "type": "BOOLEAN",
+        "status": "opt",
+        "desc": "IDS niet-standaard attribuut: indicatie of dit een IDS-specifieke installatie is",
+        "uom": null,
+        "aixm": null
+      }
+    ],
+    "relations": {
+      "parent": [
+        {
+          "name": "AirportHeliport",
+          "label": "Gerelateerde luchthaven",
+          "type": "spatial"
+        }
+      ],
+      "children": [
+        {
+          "name": "NavaidEquipment",
+          "label": "Technische apparatuur",
+          "type": "logical"
+        },
+        {
+          "name": "NavaidOperationalHours",
+          "label": "Operationele tijden",
+          "type": "logical"
+        }
+      ],
+      "spatial": [
+        {
+          "name": "AirportHeliport",
+          "label": "Binnen luchthavengebied"
+        },
+        {
+          "name": "Airspace",
+          "label": "Gerelateerd luchtruim"
+        }
+      ],
+      "logical": [
+        {
+          "name": "InstrumentApproachProcedure",
+          "label": "Gebruikt in nadering",
+          "type": "proc"
+        },
+        {
+          "name": "RouteSegment",
+          "label": "Gedefinieerd routesegment",
+          "type": "proc"
+        }
+      ]
+    },
+    "mapping": [
+      {
+        "aerodb": "designator",
+        "aixm": "Navaid.designator",
+        "table": "NAV_AID",
+        "column": "DESIGNATOR"
+      },
+      {
+        "aerodb": "type",
+        "aixm": "Navaid.type",
+        "table": "NAV_AID",
+        "column": "TYPE_CODE"
+      },
+      {
+        "aerodb": "latitude",
+        "aixm": "Navaid.position.lat",
+        "table": "NAV_AID",
+        "column": "LAT_DEG"
+      },
+      {
+        "aerodb": "longitude",
+        "aixm": "Navaid.position.lon",
+        "table": "NAV_AID",
+        "column": "LON_DEG"
+      },
+      {
+        "aerodb": "frequency",
+        "aixm": "Navaid.frequency",
+        "table": "NAV_AID",
+        "column": "FREQ_VAL"
+      },
+      {
+        "aerodb": "idsNonStandard",
+        "aixm": "— (IDS only)",
+        "table": "NAV_AID_EXT",
+        "column": "IDS_FLAG"
+      }
+    ],
+    "ownership": [
+      {
+        "attr": "designator",
+        "provider": "LVNL",
+        "originator": "AIS Datamanager",
+        "dpa": true
+      },
+      {
+        "attr": "frequency",
+        "provider": "LVNL / EUROCONTROL",
+        "originator": "Technische Dienst",
+        "dpa": true
+      },
+      {
+        "attr": "elevation",
+        "provider": "Kadaster",
+        "originator": "Survey Team",
+        "dpa": false
+      },
+      {
+        "attr": "operationalStatus",
+        "provider": "LVNL OPS",
+        "originator": "Operationeel Centrum",
+        "dpa": true
+      }
+    ],
+    "adis": [
+      {
+        "module": "AIP Publisher",
+        "attrs": [
+          "designator",
+          "type",
+          "frequency"
+        ],
+        "reqAll": true
+      },
+      {
+        "module": "FME GIS Export",
+        "attrs": [
+          "latitude",
+          "longitude",
+          "elevation"
+        ],
+        "reqAll": true
+      },
+      {
+        "module": "NOTAM Generator",
+        "attrs": [
+          "designator",
+          "operationalStatus"
+        ],
+        "reqAll": true
+      },
+      {
+        "module": "CFMU Feed",
+        "attrs": [
+          "designator",
+          "frequency",
+          "channel"
+        ],
+        "reqAll": false
+      },
+      {
+        "module": "Aeronautical DB Sync",
+        "attrs": [
+          "designator",
+          "type",
+          "latitude",
+          "longitude"
+        ],
+        "reqAll": true
+      }
+    ]
+  },
+  {
+    "id": "runway",
+    "code": "RWY",
+    "iconClass": "rwy",
+    "name": "Runway",
+    "description": "Een afgebakend rechthoekig oppervlak op een landterrein of waterspiegel, aangelegd voor het landen en opstijgen van luchtvaartuigen. Omvat alle fysieke en operationele kenmerken.",
+    "badges": [
+      "AIXM 5.1",
+      "ADIS",
+      "EASA"
+    ],
+    "aixmMapped": true,
+    "group": "Luchthaven",
+    "attrs": [
+      {
+        "name": "designator",
+        "type": "CHAR(7)",
+        "status": "req",
+        "desc": "ICAO baanaanduiding (bijv. 18L/36R)",
+        "uom": null,
+        "aixm": "designator"
+      },
+      {
+        "name": "length",
+        "type": "DECIMAL(7,2)",
+        "status": "req",
+        "desc": "Totale baanlengte",
+        "uom": "M",
+        "aixm": "nominalLength"
+      },
+      {
+        "name": "width",
+        "type": "DECIMAL(5,2)",
+        "status": "req",
+        "desc": "Totale baanbreedte",
+        "uom": "M",
+        "aixm": "width"
+      },
+      {
+        "name": "surface",
+        "type": "ENUM",
+        "status": "req",
+        "desc": "Type verharding (ASPHALT, CONCRETE, GRAVEL, GRASS)",
+        "uom": null,
+        "aixm": "surfaceType"
+      },
+      {
+        "name": "pcn",
+        "type": "VARCHAR(20)",
+        "status": "opt",
+        "desc": "Pavement Classification Number",
+        "uom": null,
+        "aixm": "classificationNumber"
+      },
+      {
+        "name": "slopeGradient",
+        "type": "DECIMAL(5,3)",
+        "status": "opt",
+        "desc": "Hellingsgradiënt van de baan",
+        "uom": "%",
+        "aixm": "slope"
+      },
+      {
+        "name": "trueBearing",
+        "type": "DECIMAL(6,3)",
+        "status": "req",
+        "desc": "Ware koers van de baan",
+        "uom": "DEG",
+        "aixm": "trueBearing"
+      },
+      {
+        "name": "elevationTDZ",
+        "type": "DECIMAL(7,2)",
+        "status": "opt",
+        "desc": "Hoogte touchdownzone",
+        "uom": "M",
+        "aixm": "elevationTDZ"
+      }
+    ],
+    "relations": {
+      "parent": [
+        {
+          "name": "AirportHeliport",
+          "label": "Behorend bij luchthaven",
+          "type": "parent"
+        }
+      ],
+      "children": [
+        {
+          "name": "RunwayDirection",
+          "label": "Baanrichtingen (2x)",
+          "type": "logical"
+        },
+        {
+          "name": "RunwayProtectionArea",
+          "label": "Beveiligingsgebieden",
+          "type": "logical"
+        }
+      ],
+      "spatial": [
+        {
+          "name": "ApronArea",
+          "label": "Aangrenzend platformgebied"
+        }
+      ],
+      "logical": [
+        {
+          "name": "InstrumentApproachProcedure",
+          "label": "Naderingsprocedures"
+        },
+        {
+          "name": "SID",
+          "label": "Vertrekprocedures"
+        }
+      ]
+    },
+    "mapping": [
+      {
+        "aerodb": "designator",
+        "aixm": "Runway.designator",
+        "table": "RUNWAY",
+        "column": "DESIGNATOR"
+      },
+      {
+        "aerodb": "length",
+        "aixm": "Runway.nominalLength",
+        "table": "RUNWAY",
+        "column": "LENGTH_M"
+      },
+      {
+        "aerodb": "width",
+        "aixm": "Runway.width",
+        "table": "RUNWAY",
+        "column": "WIDTH_M"
+      },
+      {
+        "aerodb": "surface",
+        "aixm": "Runway.surfaceType",
+        "table": "RUNWAY",
+        "column": "SURFACE_TYPE"
+      }
+    ],
+    "ownership": [
+      {
+        "attr": "length",
+        "provider": "Airport Operator",
+        "originator": "Infrastructuur",
+        "dpa": true
+      },
+      {
+        "attr": "surface",
+        "provider": "Airport Operator",
+        "originator": "Infrastructuur",
+        "dpa": false
+      },
+      {
+        "attr": "pcn",
+        "provider": "Airport Operator / CAA",
+        "originator": "Engineering",
+        "dpa": true
+      }
+    ],
+    "adis": [
+      {
+        "module": "AIP Publisher",
+        "attrs": [
+          "designator",
+          "length",
+          "width",
+          "surface",
+          "pcn"
+        ],
+        "reqAll": true
+      },
+      {
+        "module": "FME GIS Export",
+        "attrs": [
+          "designator",
+          "length",
+          "width",
+          "trueBearing"
+        ],
+        "reqAll": true
+      },
+      {
+        "module": "Aeronautical DB Sync",
+        "attrs": [
+          "designator",
+          "surface",
+          "pcn"
+        ],
+        "reqAll": false
+      }
+    ]
+  },
+  {
+    "id": "airportheliport",
+    "code": "APT",
+    "iconClass": "apt",
+    "name": "AirportHeliport",
+    "description": "Een gedefinieerd gebied op land of water (inclusief gebouwen, installaties en uitrusting) bestemd voor gehele of gedeeltelijke aankomst, vertrek en beweging van luchtvaartuigen.",
+    "badges": [
+      "AIXM 5.1",
+      "ADIS"
+    ],
+    "aixmMapped": true,
+    "group": "Luchthaven",
+    "attrs": [
+      {
+        "name": "designator",
+        "type": "CHAR(4)",
+        "status": "req",
+        "desc": "ICAO luchthavencode",
+        "uom": null,
+        "aixm": "designator"
+      },
+      {
+        "name": "iataCode",
+        "type": "CHAR(3)",
+        "status": "opt",
+        "desc": "IATA luchthavencode",
+        "uom": null,
+        "aixm": "iataDesignator"
+      },
+      {
+        "name": "elevation",
+        "type": "DECIMAL(7,2)",
+        "status": "req",
+        "desc": "Luchthavenhoogte boven MSL",
+        "uom": "M",
+        "aixm": "fieldElevation"
+      },
+      {
+        "name": "type",
+        "type": "ENUM",
+        "status": "req",
+        "desc": "Type (AD, HP, AH)",
+        "uom": null,
+        "aixm": "type"
+      }
+    ],
+    "relations": {
+      "parent": [],
+      "children": [
+        {
+          "name": "Runway",
+          "label": "Banen",
+          "type": "logical"
+        },
+        {
+          "name": "Navaid",
+          "label": "Navaids",
+          "type": "logical"
+        }
+      ],
+      "spatial": [
+        {
+          "name": "Airspace",
+          "label": "CTR / TMA"
+        }
+      ],
+      "logical": [
+        {
+          "name": "AirportAvailability",
+          "label": "Openingstijden"
+        }
+      ]
+    },
+    "mapping": [
+      {
+        "aerodb": "designator",
+        "aixm": "AirportHeliport.designator",
+        "table": "AIRPORT",
+        "column": "ICAO_CODE"
+      },
+      {
+        "aerodb": "elevation",
+        "aixm": "AirportHeliport.fieldElevation",
+        "table": "AIRPORT",
+        "column": "ELEV_M"
+      }
+    ],
+    "ownership": [
+      {
+        "attr": "designator",
+        "provider": "ICAO",
+        "originator": "AIS Datamanager",
+        "dpa": false
+      },
+      {
+        "attr": "elevation",
+        "provider": "Airport Operator",
+        "originator": "Survey Team",
+        "dpa": true
+      }
+    ],
+    "adis": [
+      {
+        "module": "AIP Publisher",
+        "attrs": [
+          "designator",
+          "iataCode",
+          "elevation",
+          "type"
+        ],
+        "reqAll": true
+      },
+      {
+        "module": "FME GIS Export",
+        "attrs": [
+          "designator",
+          "elevation"
+        ],
+        "reqAll": true
+      }
+    ]
+  },
+  {
+    "id": "airspace",
+    "code": "AIR",
+    "iconClass": "air",
+    "name": "Airspace",
+    "description": "Een gedefinieerd driedimensionaal luchtruimgebied waarbinnen specifieke vliegregels gelden. Omvat FIR, UIR, TMA, CTR en andere luchtruimklassen.",
+    "badges": [
+      "AIXM 5.1",
+      "ADIS",
+      "EASA"
+    ],
+    "aixmMapped": true,
+    "group": "Luchtruim",
+    "attrs": [
+      {
+        "name": "designator",
+        "type": "VARCHAR(10)",
+        "status": "req",
+        "desc": "Luchtruimaanduiding",
+        "uom": null,
+        "aixm": "designator"
+      },
+      {
+        "name": "type",
+        "type": "ENUM",
+        "status": "req",
+        "desc": "Luchtruimtype (FIR, UIR, TMA, CTR, D, R, P)",
+        "uom": null,
+        "aixm": "type"
+      },
+      {
+        "name": "upperLimit",
+        "type": "DECIMAL(7,2)",
+        "status": "req",
+        "desc": "Bovengrens",
+        "uom": "FL / FT",
+        "aixm": "geometryComponent.upperLimit"
+      },
+      {
+        "name": "lowerLimit",
+        "type": "DECIMAL(7,2)",
+        "status": "req",
+        "desc": "Ondergrens",
+        "uom": "FL / FT",
+        "aixm": "geometryComponent.lowerLimit"
+      }
+    ],
+    "relations": {
+      "parent": [
+        {
+          "name": "FIR",
+          "label": "Bovenliggend FIR",
+          "type": "parent"
+        }
+      ],
+      "children": [
+        {
+          "name": "AirspaceGeometry",
+          "label": "Geometrie (polygoon)",
+          "type": "logical"
+        }
+      ],
+      "spatial": [
+        {
+          "name": "AirportHeliport",
+          "label": "Gerelateerde luchthaven"
+        }
+      ],
+      "logical": [
+        {
+          "name": "Unit",
+          "label": "Verantwoordelijke eenheid"
+        }
+      ]
+    },
+    "mapping": [
+      {
+        "aerodb": "designator",
+        "aixm": "Airspace.designator",
+        "table": "AIRSPACE",
+        "column": "DESIGNATOR"
+      },
+      {
+        "aerodb": "type",
+        "aixm": "Airspace.type",
+        "table": "AIRSPACE",
+        "column": "TYPE_CODE"
+      },
+      {
+        "aerodb": "upperLimit",
+        "aixm": "geometryComponent.upperLimit",
+        "table": "AIRSPACE_GEOM",
+        "column": "UPPER_LIMIT"
+      }
+    ],
+    "ownership": [
+      {
+        "attr": "designator",
+        "provider": "EUROCONTROL / LVNL",
+        "originator": "AIS Datamanager",
+        "dpa": true
+      },
+      {
+        "attr": "upperLimit",
+        "provider": "CAA / LVNL",
+        "originator": "Airspace Manager",
+        "dpa": true
+      }
+    ],
+    "adis": [
+      {
+        "module": "AIP Publisher",
+        "attrs": [
+          "designator",
+          "type",
+          "upperLimit",
+          "lowerLimit"
+        ],
+        "reqAll": true
+      },
+      {
+        "module": "FME GIS Export",
+        "attrs": [
+          "designator",
+          "type"
+        ],
+        "reqAll": true
+      },
+      {
+        "module": "CFMU Feed",
+        "attrs": [
+          "designator",
+          "type",
+          "upperLimit",
+          "lowerLimit"
+        ],
+        "reqAll": true
+      }
+    ]
+  },
+  {
+    "id": "obstacle",
+    "code": "OBS",
+    "iconClass": "obs",
+    "name": "VerticalStructure",
+    "description": "Een permanent obstakel of kunstmatig object dat relevant is voor de luchtvaart. Omvat hoogspanningsmasten, torens, gebouwen en andere verticale structuren.",
+    "badges": [
+      "AIXM 5.1",
+      "ADIS",
+      "EASA"
+    ],
+    "aixmMapped": true,
+    "group": "Obstakels",
+    "attrs": [
+      {
+        "name": "name",
+        "type": "VARCHAR(100)",
+        "status": "opt",
+        "desc": "Naam van het obstakel",
+        "uom": null,
+        "aixm": "name"
+      },
+      {
+        "name": "type",
+        "type": "ENUM",
+        "status": "req",
+        "desc": "Obstakeltype (ANTENNA, BUILDING, TOWER, WINDTURBINE)",
+        "uom": null,
+        "aixm": "type"
+      },
+      {
+        "name": "elevation",
+        "type": "DECIMAL(7,2)",
+        "status": "req",
+        "desc": "Hoogte top boven MSL",
+        "uom": "M",
+        "aixm": "part.elevation"
+      },
+      {
+        "name": "agl",
+        "type": "DECIMAL(7,2)",
+        "status": "req",
+        "desc": "Hoogte boven grondniveau (AGL)",
+        "uom": "M",
+        "aixm": "part.heightAGL"
+      },
+      {
+        "name": "lighting",
+        "type": "BOOLEAN",
+        "status": "req",
+        "desc": "Aanwezigheid obstakelverlichting",
+        "uom": null,
+        "aixm": "lighting"
+      },
+      {
+        "name": "markingICAO",
+        "type": "BOOLEAN",
+        "status": "opt",
+        "desc": "ICAO markering aanwezig",
+        "uom": null,
+        "aixm": "marking"
+      }
+    ],
+    "relations": {
+      "parent": [],
+      "children": [
+        {
+          "name": "VerticalStructurePart",
+          "label": "Onderdelen van structuur",
+          "type": "logical"
+        }
+      ],
+      "spatial": [
+        {
+          "name": "AirportHeliport",
+          "label": "Nabijgelegen luchthaven"
+        },
+        {
+          "name": "Airspace",
+          "label": "Doordringend luchtruim"
+        }
+      ],
+      "logical": [
+        {
+          "name": "ObstacleLighting",
+          "label": "Verlichtingspecificatie"
+        }
+      ]
+    },
+    "mapping": [
+      {
+        "aerodb": "type",
+        "aixm": "VerticalStructure.type",
+        "table": "OBSTACLE",
+        "column": "TYPE_CODE"
+      },
+      {
+        "aerodb": "elevation",
+        "aixm": "VerticalStructure.part.elevation",
+        "table": "OBSTACLE_PART",
+        "column": "ELEV_M"
+      },
+      {
+        "aerodb": "agl",
+        "aixm": "VerticalStructure.part.heightAGL",
+        "table": "OBSTACLE_PART",
+        "column": "AGL_M"
+      },
+      {
+        "aerodb": "lighting",
+        "aixm": "VerticalStructure.lighting",
+        "table": "OBSTACLE",
+        "column": "LIGHTING_FLAG"
+      }
+    ],
+    "ownership": [
+      {
+        "attr": "elevation",
+        "provider": "AIS / CAA Survey",
+        "originator": "Survey Team",
+        "dpa": true
+      },
+      {
+        "attr": "lighting",
+        "provider": "Object Owner",
+        "originator": "AIS Datamanager",
+        "dpa": true
+      },
+      {
+        "attr": "type",
+        "provider": "Object Owner / CAA",
+        "originator": "AIS Datamanager",
+        "dpa": false
+      }
+    ],
+    "adis": [
+      {
+        "module": "AIP Publisher",
+        "attrs": [
+          "type",
+          "elevation",
+          "agl",
+          "lighting"
+        ],
+        "reqAll": true
+      },
+      {
+        "module": "FME GIS Export",
+        "attrs": [
+          "elevation",
+          "agl",
+          "lighting",
+          "markingICAO"
+        ],
+        "reqAll": true
+      },
+      {
+        "module": "eAIP Charts",
+        "attrs": [
+          "type",
+          "elevation",
+          "lighting"
+        ],
+        "reqAll": true
+      }
+    ]
+  }
+]

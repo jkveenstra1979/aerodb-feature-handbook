@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AeroDB Feature",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "code", "name", "group", "attrs", "relations", "mapping", "ownership", "adis"],
+    "properties": {
+      "id": { "type": "string" },
+      "code": { "type": "string" },
+      "iconClass": { "type": "string" },
+      "name": { "type": "string" },
+      "description": { "type": "string" },
+      "badges": { "type": "array", "items": { "type": "string" } },
+      "aixmMapped": { "type": "boolean" },
+      "group": { "type": "string" },
+      "attrs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["name", "type", "status", "desc"],
+          "properties": {
+            "name": { "type": "string" },
+            "type": { "type": "string" },
+            "status": { "enum": ["req", "opt", "cond"] },
+            "desc": { "type": "string" },
+            "uom": { "type": ["string", "null"] },
+            "aixm": { "type": ["string", "null"] }
+          }
+        }
+      },
+      "relations": {
+        "type": "object",
+        "properties": {
+          "parent": { "$ref": "#/definitions/relationList" },
+          "children": { "$ref": "#/definitions/relationList" },
+          "spatial": { "$ref": "#/definitions/relationList" },
+          "logical": { "$ref": "#/definitions/relationList" }
+        },
+        "additionalProperties": false
+      },
+      "mapping": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["aerodb", "aixm", "table", "column"],
+          "properties": {
+            "aerodb": { "type": "string" },
+            "aixm": { "type": "string" },
+            "table": { "type": "string" },
+            "column": { "type": "string" }
+          }
+        }
+      },
+      "ownership": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["attr", "provider", "originator", "dpa"],
+          "properties": {
+            "attr": { "type": "string" },
+            "provider": { "type": "string" },
+            "originator": { "type": "string" },
+            "dpa": { "type": "boolean" }
+          }
+        }
+      },
+      "adis": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["module", "attrs", "reqAll"],
+          "properties": {
+            "module": { "type": "string" },
+            "attrs": { "type": "array", "items": { "type": "string" } },
+            "reqAll": { "type": "boolean" }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "relationList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "label"],
+        "properties": {
+          "name": { "type": "string" },
+          "label": { "type": "string" },
+          "type": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}
