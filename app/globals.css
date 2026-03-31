@@ -569,11 +569,13 @@
     border-top: 1px solid var(--border);
     font-size: 11px;
     color: var(--muted);
+    flex-wrap: wrap;
   }
   .legend-item {
     display: flex;
     align-items: center;
     gap: 4px;
+    white-space: nowrap;
   }
 
   /* ADIS DEPS */
