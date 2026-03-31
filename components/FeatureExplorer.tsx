@@ -272,7 +272,7 @@ function renderAttrs(f: Feature) {
       <div className="legend">
         <div className="legend-item"><span className="status-req" /> Verplicht</div>
         <div className="legend-item"><span className="status-opt" /> Optioneel</div>
-        <div className="legend-item"><span className="status-cond" /> Conditioneel</div>
+        <div className="legend-item"><span className="status-cond" /> Cond.</div>
         <div className="legend-item" style={{ marginLeft: 'auto', color: 'var(--faint)' }}>
           {f.attrs.filter((a) => a.aixm === null).length} IDS niet-standaard attributen
         </div>
@@ -284,7 +284,7 @@ function renderAttrs(f: Feature) {
 function renderStatus(status: Feature['attrs'][number]['status']) {
   if (status === 'req') return (<><span className="status-req" />Verplicht</>);
   if (status === 'opt') return (<><span className="status-opt" />Optioneel</>);
-  return (<><span className="status-cond" />Conditioneel</>);
+  return (<><span className="status-cond" />Cond.</>);
 }
 
 function renderAixm(aixm: string | null) {
