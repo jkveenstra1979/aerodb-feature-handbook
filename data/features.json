@@ -170,7 +170,7 @@
       },
       {
         "aerodb": "idsNonStandard",
-        "aixm": "— (IDS only)",
+        "aixm": "\u2014 (IDS only)",
         "table": "NAV_AID_EXT",
         "column": "IDS_FLAG"
       }
@@ -307,7 +307,7 @@
         "name": "slopeGradient",
         "type": "DECIMAL(5,3)",
         "status": "opt",
-        "desc": "Hellingsgradiënt van de baan",
+        "desc": "Hellingsgradi\u00ebnt van de baan",
         "uom": "%",
         "aixm": "slope"
       },
@@ -711,62 +711,222 @@
     "code": "OBS",
     "iconClass": "obs",
     "name": "VerticalStructure",
-    "description": "Een permanent obstakel of kunstmatig object dat relevant is voor de luchtvaart. Omvat hoogspanningsmasten, torens, gebouwen en andere verticale structuren.",
+    "description": "All fixed or mobile objects that extend above the surface of the Earth; obstacles when on movement areas or penetrating protected surfaces.",
     "badges": [
       "AIXM 5.1",
       "ADIS",
       "EASA"
     ],
     "aixmMapped": true,
-    "group": "Obstakels",
+    "group": "Obstacles",
     "attrs": [
       {
         "name": "name",
-        "type": "VARCHAR(100)",
+        "type": "TextName",
         "status": "opt",
-        "desc": "Naam van het obstakel",
+        "desc": "Name of the vertical structure",
         "uom": null,
-        "aixm": "name"
+        "aixm": "VerticalStructure.name"
       },
       {
         "name": "type",
-        "type": "ENUM",
+        "type": "CodeVerticalStructure",
         "status": "req",
-        "desc": "Obstakeltype (ANTENNA, BUILDING, TOWER, WINDTURBINE)",
+        "desc": "Type: building, tower, cable, etc.",
         "uom": null,
-        "aixm": "type"
+        "aixm": "VerticalStructure.type"
       },
       {
-        "name": "elevation",
-        "type": "DECIMAL(7,2)",
-        "status": "req",
-        "desc": "Hoogte top boven MSL",
-        "uom": "M",
-        "aixm": "part.elevation"
-      },
-      {
-        "name": "agl",
-        "type": "DECIMAL(7,2)",
-        "status": "req",
-        "desc": "Hoogte boven grondniveau (AGL)",
-        "uom": "M",
-        "aixm": "part.heightAGL"
-      },
-      {
-        "name": "lighting",
-        "type": "BOOLEAN",
-        "status": "req",
-        "desc": "Aanwezigheid obstakelverlichting",
-        "uom": null,
-        "aixm": "lighting"
-      },
-      {
-        "name": "markingICAO",
-        "type": "BOOLEAN",
+        "name": "lighted",
+        "type": "YesNo",
         "status": "opt",
-        "desc": "ICAO markering aanwezig",
+        "desc": "Indicates the obstacle is lighted",
         "uom": null,
-        "aixm": "marking"
+        "aixm": "VerticalStructure.lighted"
+      },
+      {
+        "name": "markingICAOStandard",
+        "type": "YesNo",
+        "status": "opt",
+        "desc": "Markings comply with ICAO Annex 14",
+        "uom": null,
+        "aixm": "VerticalStructure.markingICAOStandard"
+      },
+      {
+        "name": "group",
+        "type": "YesNo",
+        "status": "opt",
+        "desc": "Structure is a group of similar objects",
+        "uom": null,
+        "aixm": "VerticalStructure.group"
+      },
+      {
+        "name": "length",
+        "type": "Distance",
+        "status": "opt",
+        "desc": "Overall length of the obstruction",
+        "uom": "M",
+        "aixm": "VerticalStructure.length"
+      },
+      {
+        "name": "width",
+        "type": "Distance",
+        "status": "opt",
+        "desc": "Overall width of the obstruction",
+        "uom": "M",
+        "aixm": "VerticalStructure.width"
+      },
+      {
+        "name": "radius",
+        "type": "Distance",
+        "status": "opt",
+        "desc": "Overall radius for circular obstacles",
+        "uom": "M",
+        "aixm": "VerticalStructure.radius"
+      },
+      {
+        "name": "lightingICAOStandard",
+        "type": "YesNo",
+        "status": "opt",
+        "desc": "Lighting complies with ICAO Annex 14",
+        "uom": null,
+        "aixm": "VerticalStructure.lightingICAOStandard"
+      },
+      {
+        "name": "synchronisedLighting",
+        "type": "YesNo",
+        "status": "opt",
+        "desc": "Flashing light elements are synchronised",
+        "uom": null,
+        "aixm": "VerticalStructure.synchronisedLighting"
+      },
+      {
+        "name": "marker",
+        "type": "MarkerBeaconRef",
+        "status": "opt",
+        "desc": "Marker that marks the structure",
+        "uom": null,
+        "aixm": "VerticalStructure.marker"
+      },
+      {
+        "name": "lightingAvailability.status",
+        "type": "CodeStatusOperations",
+        "status": "opt",
+        "desc": "Operational status of lighting",
+        "uom": null,
+        "aixm": "VerticalStructureLightingStatus.status"
+      },
+      {
+        "name": "part.verticalExtent",
+        "type": "Distance",
+        "status": "opt",
+        "desc": "Extent of the vertical structure part",
+        "uom": "M",
+        "aixm": "VerticalStructurePart.verticalExtent"
+      },
+      {
+        "name": "part.verticalExtentAccuracy",
+        "type": "Distance",
+        "status": "opt",
+        "desc": "Accuracy of declared vertical extent",
+        "uom": "M",
+        "aixm": "VerticalStructurePart.verticalExtentAccuracy"
+      },
+      {
+        "name": "part.constructionStatus",
+        "type": "CodeStatusConstruction",
+        "status": "opt",
+        "desc": "Construction status of the structure",
+        "uom": null,
+        "aixm": "VerticalStructurePart.constructionStatus"
+      },
+      {
+        "name": "part.markingPattern",
+        "type": "CodeVerticalStructureMarking",
+        "status": "opt",
+        "desc": "Layout of paint/marking for visibility",
+        "uom": null,
+        "aixm": "VerticalStructurePart.markingPattern"
+      },
+      {
+        "name": "part.markingFirstColour",
+        "type": "CodeColour",
+        "status": "opt",
+        "desc": "Principal colour of the marking",
+        "uom": null,
+        "aixm": "VerticalStructurePart.markingFirstColour"
+      },
+      {
+        "name": "part.markingSecondColour",
+        "type": "CodeColour",
+        "status": "opt",
+        "desc": "Secondary colour of the marking",
+        "uom": null,
+        "aixm": "VerticalStructurePart.markingSecondColour"
+      },
+      {
+        "name": "part.mobile",
+        "type": "YesNo",
+        "status": "opt",
+        "desc": "Structure may move around nominal location",
+        "uom": null,
+        "aixm": "VerticalStructurePart.mobile"
+      },
+      {
+        "name": "part.frangible",
+        "type": "YesNo",
+        "status": "opt",
+        "desc": "Obstruction is easily broken (frangible)",
+        "uom": null,
+        "aixm": "VerticalStructurePart.frangible"
+      },
+      {
+        "name": "part.visibleMaterial",
+        "type": "CodeVerticalStructureMaterial",
+        "status": "opt",
+        "desc": "Material composing load-bearing/exterior",
+        "uom": null,
+        "aixm": "VerticalStructurePart.visibleMaterial"
+      },
+      {
+        "name": "part.designator",
+        "type": "TextDesignator",
+        "status": "opt",
+        "desc": "Local alphanumeric identifier",
+        "uom": null,
+        "aixm": "VerticalStructurePart.designator"
+      },
+      {
+        "name": "part.location",
+        "type": "ElevatedPoint",
+        "status": "opt",
+        "desc": "Location of the vertical structure",
+        "uom": null,
+        "aixm": "VerticalStructurePart.horizontalProjection_location"
+      },
+      {
+        "name": "part.linearExtent",
+        "type": "ElevatedCurve",
+        "status": "opt",
+        "desc": "Linear extent of the structure",
+        "uom": null,
+        "aixm": "VerticalStructurePart.horizontalProjection_linearExtent"
+      },
+      {
+        "name": "part.surfaceExtent",
+        "type": "ElevatedSurface",
+        "status": "opt",
+        "desc": "Surface extent of the structure part",
+        "uom": null,
+        "aixm": "VerticalStructurePart.horizontalProjection_surfaceExtent"
+      },
+      {
+        "name": "part.lighting",
+        "type": "LightElementRef",
+        "status": "opt",
+        "desc": "Lighting elements of the structure part",
+        "uom": null,
+        "aixm": "VerticalStructurePart.lighting"
       }
     ],
     "relations": {
@@ -774,24 +934,27 @@
       "children": [
         {
           "name": "VerticalStructurePart",
-          "label": "Onderdelen van structuur",
+          "label": "Structure parts",
           "type": "logical"
         }
       ],
-      "spatial": [
-        {
-          "name": "AirportHeliport",
-          "label": "Nabijgelegen luchthaven"
-        },
-        {
-          "name": "Airspace",
-          "label": "Doordringend luchtruim"
-        }
-      ],
+      "spatial": [],
       "logical": [
         {
-          "name": "ObstacleLighting",
-          "label": "Verlichtingspecificatie"
+          "name": "NavaidEquipment",
+          "label": "Hosted navaid equipment"
+        },
+        {
+          "name": "SpecialNavigationStation",
+          "label": "Hosted special nav station"
+        },
+        {
+          "name": "Unit/Organisation/Service",
+          "label": "Hosted units/organisations/services"
+        },
+        {
+          "name": "GroundLightSystem",
+          "label": "Supported ground lights"
         }
       ]
     },
@@ -803,74 +966,43 @@
         "column": "TYPE_CODE"
       },
       {
-        "aerodb": "elevation",
-        "aixm": "VerticalStructure.part.elevation",
-        "table": "OBSTACLE_PART",
-        "column": "ELEV_M"
-      },
-      {
-        "aerodb": "agl",
-        "aixm": "VerticalStructure.part.heightAGL",
-        "table": "OBSTACLE_PART",
-        "column": "AGL_M"
-      },
-      {
-        "aerodb": "lighting",
-        "aixm": "VerticalStructure.lighting",
+        "aerodb": "length",
+        "aixm": "VerticalStructure.length",
         "table": "OBSTACLE",
-        "column": "LIGHTING_FLAG"
+        "column": "LENGTH_M"
+      },
+      {
+        "aerodb": "width",
+        "aixm": "VerticalStructure.width",
+        "table": "OBSTACLE",
+        "column": "WIDTH_M"
+      },
+      {
+        "aerodb": "radius",
+        "aixm": "VerticalStructure.radius",
+        "table": "OBSTACLE",
+        "column": "RADIUS_M"
+      },
+      {
+        "aerodb": "lighted",
+        "aixm": "VerticalStructure.lighted",
+        "table": "OBSTACLE",
+        "column": "LIGHTED_FLAG"
+      },
+      {
+        "aerodb": "lightingICAOStandard",
+        "aixm": "VerticalStructure.lightingICAOStandard",
+        "table": "OBSTACLE",
+        "column": "ICAO_LIGHT_FLAG"
+      },
+      {
+        "aerodb": "synchronisedLighting",
+        "aixm": "VerticalStructure.synchronisedLighting",
+        "table": "OBSTACLE",
+        "column": "SYNC_LIGHT_FLAG"
       }
     ],
-    "ownership": [
-      {
-        "attr": "elevation",
-        "provider": "AIS / CAA Survey",
-        "originator": "Survey Team",
-        "dpa": true
-      },
-      {
-        "attr": "lighting",
-        "provider": "Object Owner",
-        "originator": "AIS Datamanager",
-        "dpa": true
-      },
-      {
-        "attr": "type",
-        "provider": "Object Owner / CAA",
-        "originator": "AIS Datamanager",
-        "dpa": false
-      }
-    ],
-    "adis": [
-      {
-        "module": "AIP Publisher",
-        "attrs": [
-          "type",
-          "elevation",
-          "agl",
-          "lighting"
-        ],
-        "reqAll": true
-      },
-      {
-        "module": "FME GIS Export",
-        "attrs": [
-          "elevation",
-          "agl",
-          "lighting",
-          "markingICAO"
-        ],
-        "reqAll": true
-      },
-      {
-        "module": "eAIP Charts",
-        "attrs": [
-          "type",
-          "elevation",
-          "lighting"
-        ],
-        "reqAll": true
-      }
-    ]
+    "ownership": [],
+    "adis": []
   }
 ]
