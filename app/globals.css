@@ -386,6 +386,11 @@
     padding: 9px 16px;
     vertical-align: top;
   }
+  .attr-table td:nth-child(3),
+  .attr-table th:nth-child(3) {
+    white-space: nowrap;
+    min-width: 120px;
+  }
   .attr-name {
     font-family: var(--mono);
     font-size: 12px;
